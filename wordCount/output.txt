@@ -1,0 +1,3 @@
+Total words: 0
+Distinct words: 0
+Total characters: 0

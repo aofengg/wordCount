@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="wordCount" default="compile_all"
+    basedir=".">
+    
+    <property name="BUILD.compiler" value="modern" />
+    <property name="src" value="src" />
+    <property name="BUILD" value="BUILD" />
+    <property name="classes" value="${BUILD}/classes" />
+    
+    
+    <target name="all" depends="compile_all" />
+    
+    <target name="compile_all" depends="wordCount" />
+    
+    <target name="clean">
+        <delete dir="${BUILD}" />
+        <delete file="output.txt" />
+        <delete file="originalTree.txt" />
+        <delete file="backupTree.txt" />
+        <delete file="newOriginalTree.txt" />
+        <delete file="newBackupTree.txt" />
+    </target>
+    
+    <!-- Prepare target directories -->
+    <target name="prepare">
+        <mkdir dir="${BUILD}" />
+        <mkdir dir="${classes}" />
+    </target>
+    
+    
+    <target name="jar" depends="wordCount">
+        <mkdir dir="${BUILD}/jar" />
+        <jar destfile="${BUILD}/jar/wordCount.jar" basedir="${BUILD}/classes">
+            <manifest>
+                <attribute name="Main-Class"
+                value="wordCount.driver.Driver" />
+            </manifest>
+        </jar>
+    </target>
+    
+    <!-- ** means all subdirectories as well -->
+    <!-- * means all files in the current directory -->
+    <!-- for just java files use *.java -->
+    
+    <target name="wordCount" depends="prepare">
+        <javac srcdir="${src}" excludes="**/package.html" includes="wordCount/**" destdir="${classes}"
+        classpath="${classes}" debug="on" optimize="on" deprecation="off" includeantruntime="on"/>
+    </target>
+    
+    
+    <target name="run" depends="jar">
+        <java jar="${BUILD}/jar/wordCount.jar" fork="true">
+            <arg value="${arg0}" />
+            <arg value="${arg1}" />
+            <arg value="${arg2}" />
+        </java>
+        
+    </target>
+    
+    <target name="tarzip">
+        <tar destfile="Yunpeng_Ge_assign4.tar.gz" basedir="../../"
+        compression="gzip" />
+    </target>
+    
+</project>
